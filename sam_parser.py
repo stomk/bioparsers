@@ -113,7 +113,7 @@ class Cigar(object):
 
     def aln_identity(self):
         stripped_cigar = self.strip_softclip()
-        return 1.0 * stripped_cigar.num_match() / stripped_cigar.num_total_bases()
+        return round(1.0 * stripped_cigar.num_match() / stripped_cigar.num_total_bases(), 4)
 
     def slice_left(self, slice_len):
         sliced_cigar = []
