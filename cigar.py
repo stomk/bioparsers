@@ -34,10 +34,14 @@ class Cigar(object):
     def num_deletion(self):
         return sum(map(lambda x: x[1], filter(lambda x: x[0] == 'D', self.cigar_arr)))
 
+    def num_left_softclip(self):
+        return self.cigar_arr[0][1] if self.cigar_arr[0][0] == 'S' else 0
+
+    def num_right_softclip(self):
+        return self.cigar_arr[-1][1] if self.cigar_arr[-1][0] == 'S' else 0
+
     def num_softclip(self):
-        left_softclip = self.cigar_arr[0][1] if self.cigar_arr[0][0] == 'S' else 0
-        right_softclip = self.cigar_arr[-1][1] if self.cigar_arr[-1][0] == 'S' else 0
-        return left_softclip, right_softclip
+        return self.num_left_softclip(), self.num_right_softclip()
 
     def reverse(self):
         reversed_cigar_arr = list(reversed(self.cigar_arr))
