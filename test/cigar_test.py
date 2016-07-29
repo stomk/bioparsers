@@ -44,8 +44,12 @@ class TestCigar(unittest.TestCase):
         self.assertEqual(c.slice_left(10).cigar_str,  "5S5=")
         self.assertEqual(c.slice_right(10).cigar_str, "2=3X5S")
 
-    def test_alignment_identity(self):
-        self.assertEqual(self.c.aln_identity(), 0.75)
+    def test_alignment_stats(self):
+        c = self.c
+        self.assertEqual(c.aln_bgn(), 6)
+        self.assertEqual(c.aln_end(), 45)
+        self.assertEqual(c.aln_len(), 40)
+        self.assertEqual(c.aln_identity(), 0.75)
 
     def test_arr_to_str(self):
         c_str = Cigar.arr_to_str(self.test_cigar_arr)
