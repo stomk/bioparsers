@@ -4,7 +4,7 @@ import unittest
 import os.path
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from sam_parser import SamAlignment
+from sam_alignment import SamAlignment
 
 class TestSamAlignment(unittest.TestCase):
     def setUp(self):
