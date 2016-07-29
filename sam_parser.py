@@ -1,32 +1,30 @@
+from alignment import Alignment
 from cigar import Cigar
 
-class SamAlignment(object):
-    def __init__(self, qname='', flag=0, rname='', pos=0, mapq=0, cigar='',
-                 rnext='', pnext=0, tlen=0, seq='', qual=''):
-        self.qname = qname
-        self.flag  = flag
-        self.rname = rname
-        self.pos   = pos
-        self.mapq  = mapq
-        self.cigar = cigar
-        self.rnext = rnext
-        self.pnext = pnext
-        self.tlen  = tlen
-        self.seq   = seq
-        self.qual  = qual
+class SamAlignment(Alignment):
+    def __init__(self, line):
+        super(self.__class__, self).__init__()
+        self.line = line
+        fields = line.strip().split()
+        self.set_mandatory_fields(fields[:11])
+        self.set_optional_fields(fields[11:])
+        self.set_cigar()
+        self.set_attributes()
 
     def set_mandatory_fields(self, array):
-        self.qname = array[0]
-        self.flag  = array[1]
-        self.rname = array[2]
-        self.pos   = array[3]
-        self.mapq  = array[4]
-        self.cigar = array[5]
-        self.rnext = array[6]
-        self.pnext = array[7]
-        self.tlen  = array[8]
-        self.seq   = array[9]
-        self.qual  = array[10]
+        fields = {}
+        fields['qname'] = array[0]
+        fields['flag']  = array[1]
+        fields['rname'] = array[2]
+        fields['pos']   = array[3]
+        fields['mapq']  = array[4]
+        fields['cigar'] = array[5]
+        fields['rnext'] = array[6]
+        fields['pnext'] = array[7]
+        fields['tlen']  = array[8]
+        fields['seq']   = array[9]
+        fields['qual']  = array[10]
+        self.mandatory_fields = fields
 
     def set_optional_fields(self, array):
         optional_fields = {}
@@ -35,23 +33,28 @@ class SamAlignment(object):
             optional_fields[key] = val
         self.optional_fields = optional_fields
 
+    def set_cigar(self):
+        self.cigar = Cigar(self.mandatory_fields['cigar'])
 
-    ## Class methods
+    def set_attributes(self):
+        m = self.mandatory_fields
+        c = self.cigar
 
-    @classmethod
-    def create_from_array(cls, array):
-        aln = cls()
-        aln.set_mandatory_fields(array[:11])
-        aln.set_optional_fields(array[11:])
-        return aln
+        self.q_name = m['qname']
+        self.q_bgn  = c.aln_bgn()
+        self.q_end  = self.q_bgn + c.num_query_bases_in_aln() - 1
+        self.q_len  = c.num_query_bases()
 
-    @classmethod
-    def create_from_line(cls, line):
-        return cls.create_from_array(line.strip().split())
+        self.t_name = m['rname']
+        self.t_bgn  = int(m['pos'])
+        self.t_end  = self.t_bgn + c.num_target_bases_in_aln() - 1
+
+        self.aln_len = c.aln_len()
+        self.aln_identity = c.aln_identity()
 
 
 
 def parse_sam(sam_file):
     with open(sam_file, 'r') as f:
         for line in f:
-            yield SamAlignment.create_from_line(line)
+            yield SamAlignment(line)
