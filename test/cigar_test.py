@@ -23,12 +23,14 @@ class TestCigar(unittest.TestCase):
 
     def test_base_count(self):
         c = self.c
-        self.assertEqual(c.num_total_bases(), 50)
-        self.assertEqual(c.num_match(),       30)
-        self.assertEqual(c.num_mismatch(),     3)
-        self.assertEqual(c.num_insertion(),    3)
-        self.assertEqual(c.num_deletion(),     4)
-        self.assertEqual(c.num_softclip(), (5, 5))
+        self.assertEqual(c.num_total_bases(),         50)
+        self.assertEqual(c.num_match(),               30)
+        self.assertEqual(c.num_mismatch(),             3)
+        self.assertEqual(c.num_insertion(),            3)
+        self.assertEqual(c.num_deletion(),             4)
+        self.assertEqual(c.num_softclip(),        (5, 5))
+        self.assertEqual(c.num_query_bases_in_aln(),  36)
+        self.assertEqual(c.num_target_bases_in_aln(), 37)
 
     def test_reverse(self):
         reversed_cigar_str = "5S3X10=4D15=3I5=5S"

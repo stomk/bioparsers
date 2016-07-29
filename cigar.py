@@ -43,6 +43,12 @@ class Cigar(object):
     def num_softclip(self):
         return self.num_left_softclip(), self.num_right_softclip()
 
+    def num_query_bases_in_aln(self):
+        return self.num_match() + self.num_mismatch() + self.num_insertion()
+
+    def num_target_bases_in_aln(self):
+        return self.num_match() + self.num_mismatch() + self.num_deletion()
+
     def reverse(self):
         reversed_cigar_arr = list(reversed(self.cigar_arr))
         return self.__class__.create_from_array(reversed_cigar_arr)
