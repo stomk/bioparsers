@@ -29,6 +29,7 @@ class TestCigar(unittest.TestCase):
         self.assertEqual(c.num_insertion(),            3)
         self.assertEqual(c.num_deletion(),             4)
         self.assertEqual(c.num_softclip(),        (5, 5))
+        self.assertEqual(c.num_query_bases(),         46)
         self.assertEqual(c.num_query_bases_in_aln(),  36)
         self.assertEqual(c.num_target_bases_in_aln(), 37)
 

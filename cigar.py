@@ -43,6 +43,9 @@ class Cigar(object):
     def num_softclip(self):
         return self.num_left_softclip(), self.num_right_softclip()
 
+    def num_query_bases(self):
+        return self.num_left_softclip() + self.num_query_bases_in_aln() + self.num_right_softclip()
+
     def num_query_bases_in_aln(self):
         return self.num_match() + self.num_mismatch() + self.num_insertion()
 
