@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
 import unittest
-from sam_parser import Cigar
+import sys
+sys.path.append('../')
+from cigar import Cigar
 
 class TestCigar(unittest.TestCase):
     def setUp(self):
@@ -9,7 +11,7 @@ class TestCigar(unittest.TestCase):
         self.test_cigar_arr = [('S', 5), ('=', 5), ('I', 3), ('=', 15),
                           ('D', 4), ('=', 10), ('X', 3), ('S', 5)]
         self.c = Cigar(self.test_cigar_str)
-    
+
     def test_constructor(self):
         c = self.c
         self.assertEqual(c.cigar_str, self.test_cigar_str)
@@ -27,7 +29,7 @@ class TestCigar(unittest.TestCase):
         self.assertEqual(c.num_insertion(),    3)
         self.assertEqual(c.num_deletion(),     4)
         self.assertEqual(c.num_softclip(), (5, 5))
-        
+
     def test_reverse(self):
         reversed_cigar_str = "5S3X10=4D15=3I5=5S"
         self.assertEqual(self.c.reverse().cigar_str, reversed_cigar_str)
@@ -53,7 +55,7 @@ class TestCigar(unittest.TestCase):
         c = Cigar.create_from_array(self.test_cigar_arr)
         self.assertEqual(c.cigar_str, self.test_cigar_str)
         self.assertEqual(c.cigar_arr, self.test_cigar_arr)
-        
+
 
 if __name__ == '__main__':
     unittest.main()
