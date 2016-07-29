@@ -55,9 +55,17 @@ class Cigar(object):
             array = array[:-1]
         return self.__class__.create_from_array(array)
 
+    def aln_bgn(self):
+        return self.num_left_softclip() + 1
+
+    def aln_end(self):
+        return self.num_total_bases() - self.num_right_softclip()
+
+    def aln_len(self):
+        return self.num_total_bases() - self.num_left_softclip() - self.num_right_softclip()
+
     def aln_identity(self):
-        stripped_cigar = self.strip_softclip()
-        return round(1.0 * stripped_cigar.num_match() / stripped_cigar.num_total_bases(), 4)
+        return round(1.0 * self.num_match() / self.aln_len(), 4)
 
     def slice_left(self, slice_len):
         sliced_cigar = []
