@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
 import unittest
+import os.path
 import sys
-sys.path.append('../')
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from cigar import Cigar
 
 class TestCigar(unittest.TestCase):
