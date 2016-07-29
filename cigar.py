@@ -1,7 +1,7 @@
 class Cigar(object):
     symbols = ['M', 'I', 'D', 'N', 'S', 'H', 'P', '=', 'X']
 
-    def __init__(self, cigar_str):
+    def __init__(self, cigar_str=''):
         self.cigar_str = cigar_str
         self.cigar_arr = self.parse_cigar(cigar_str)
 
