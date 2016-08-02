@@ -92,6 +92,27 @@ class Cigar(object):
     def slice_right(self, slice_len):
         return self.reverse().slice_left(slice_len).reverse()
 
+    def to_legacy_match(self):
+        converted_arr = []
+        for symbol, length in self.cigar_arr:
+            if symbol in ['=', 'X']:
+                converted_arr.append(('M', length))
+            else:
+                converted_arr.append((symbol, length))
+
+        merged_arr = []
+        prev_symbol, sum_length = converted_arr[0]
+        for symbol, length in converted_arr[1:]:
+            if symbol == prev_symbol:
+                sum_length += length
+            else:
+                merged_arr.append((prev_symbol, sum_length))
+                prev_symbol = symbol
+                sum_length = length
+
+        merged_arr.append((prev_symbol, sum_length))
+        return self.__class__.create_from_array(merged_arr)
+
 
     ## Class methods
 
@@ -103,3 +124,8 @@ class Cigar(object):
     @classmethod
     def arr_to_str(cls, cigar_arr):
         return ''.join([str(c[1]) + c[0] for c in cigar_arr])
+
+    @classmethod
+    def convert_to_legacy_match(cls, cigar_str):
+        return cls(cigar_str).to_legacy_match().cigar_str
+

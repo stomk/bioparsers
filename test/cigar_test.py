@@ -55,6 +55,12 @@ class TestCigar(unittest.TestCase):
         self.assertEqual(c.aln_len(), 40)
         self.assertEqual(c.aln_identity(), 0.75)
 
+    def test_to_legacy_match(self):
+        c = self.c.to_legacy_match()
+        self.assertEqual(c.cigar_str, "5S5M3I15M4D13M5S")
+        c_str = Cigar.convert_to_legacy_match(self.test_cigar_str)
+        self.assertEqual(c_str, "5S5M3I15M4D13M5S")
+
     def test_arr_to_str(self):
         c_str = Cigar.arr_to_str(self.test_cigar_arr)
         self.assertEqual(c_str, self.test_cigar_str)
