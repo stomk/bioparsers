@@ -1,2 +1,6 @@
-# sam_parser
-A Python package for manipulating SAM file.
+# bioparsers
+A Python package for manipulating bioinformatic formats.
+
+## Supporting formats
+- SAM
+- BLAST
